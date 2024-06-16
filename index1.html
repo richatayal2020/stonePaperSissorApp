@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0px;
+            padding:0px ; 
+            text-align: center;
+        }
+        h1{
+            color: white;
+            background-color: rgb(2, 2, 85);
+            height: 5rem;
+            line-height: 5rem;
+
+        }
+
+        .choice:hover{
+            /* opacity: 50% ; */
+            cursor: pointer;
+            background-color: rgb(2, 2, 85);
+            border-radius: 50%;
+        }
+
+
+
+        .choice{
+        height: 165px;
+        width: 165px ; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        }
+
+        img{
+           height: 150px;
+           width: 150px ; 
+           border-radius: 50%;
+           object-fit: cover;
+           display: flex;
+           
+        }
+        .choices{
+            display: flex;
+            margin-top: 5rem ;
+            gap:2rem ; 
+            justify-content: center;
+        }
+
+        .score{
+            display: flex ;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        #user-score , #comp-score {
+            font-size: 2rem;
+        }
+
+        .message{
+            font-size : 3rem ; 
+            background-color: rgb(2, 2, 85);
+            color: white;
+            /* width: fit-content; */
+            display:inline-block ;
+            padding: 8px;
+            border-radius: 10px;
+            margin-top: 2rem;
+
+        }
+
+
+
+    </style>
+</head>
+<body>
+    <h1>Rock Paper Sissors</h1>
+
+    <div class="choices">
+
+        <div class="choice"  id="rock">
+            <img src="/rock.png" >
+        </div>
+        <div class="choice"  id="paper">
+            <img src="/paper.png" >
+        </div>
+        <div class="choice"  id="sissors">
+            <img src="/scissors.png" >
+        </div>
+
+    </div>
+
+    <div class="score">
+
+        <div >
+            <p class= "user"  id = "user-score">0</p>
+            <p>You</p>
+        </div>
+        
+    
+    <div> 
+        <p class= "user" id="comp-score">0</p>
+        <p>comp</p>
+    </div>
+</div>
+
+    <div class="message">
+        <p id="msg">Play the game</p>
+    </div>
+
+    <script>
+        let user_score = 0 ; 
+        let comp_score = 0 ; 
+
+
+        const choiceRef = document.querySelectorAll('.choice')  ; 
+        const msgRef = document.querySelector('#msg') ;
+        const userScoreRef = document.querySelector('#user-score');
+        const compScoreRef = document.querySelector('#comp-score'); 
+
+        const genCompChoice = () => {
+            const options = ['rock' , 'paper' , 'sissors'] ; 
+            const randomIdx = Math.floor(Math.random() * 3);
+            return options[randomIdx] ;  
+        }
+
+        const drawGame =  () => {
+            msgRef.innerText = "Game is Draw, Try Again" ;
+            msgRef.style.backgroundColor = "rgb(2, 2, 85)" ; 
+        }
+
+        const showWinner = (userChoice , compChoice , userWin) => {
+            if(userWin){
+                user_score++ ; 
+                userScoreRef.innerText = user_score ; 
+                msgRef.innerText = `You Win! Your ${userChoice} beats computer ${compChoice}` ; 
+                msgRef.style.backgroundColor = "green" ; 
+            }
+            else{
+                comp_score++ ;
+                compScoreRef.innerText = comp_score ; 
+                msgRef.innerText = `You Loose! Computer ${compChoice} beats your ${userChoice}` ;
+                msgRef.style.backgroundColor = "red" ; 
+            }
+        }
+
+        const playGame = (userChoice) => {
+            
+            const compChoice = genCompChoice() ;
+
+            if(userChoice === compChoice) {
+                drawGame() ;
+            }
+
+            else{
+                let userWin =  true ; 
+                if(userChoice === "rock") { 
+                    userWin = compChoice === "paper" ? false : true ;  
+                }
+                else if(userChoice === "paper") {
+                    userWin = compChoice === "sissors" ? false : true ;
+                }
+                else{
+                    userWin = compChoice === "rock" ? false : true ;
+                }
+                showWinner(userChoice , compChoice , userWin) ; 
+            }
+            
+
+        }
+
+        choiceRef.forEach((choice) => {
+
+            choice.addEventListener("click" , function(){
+                const userChoice = choice.getAttribute("id") ;
+               
+                playGame(userChoice) ;
+            })
+
+        });
+
+
+
+    </script>
+
+</body>
+</html>
